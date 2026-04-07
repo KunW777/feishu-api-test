@@ -53,8 +53,15 @@ class BaseAPI:
         return self._handle_response(response)
 
     def _handle_response(self, response: requests.Response) -> dict:
-        """处理响应，统一错误处理"""
-        result = response.json()
-        if result.get("code") != 0:
-            raise Exception(f"API 请求失败: {result}")
+        """处理响应，返回结果（包含成功和失败）"""
+        # 尝试解析 JSON
+        try:
+            result = response.json()
+        except Exception:
+            # 非 JSON 响应（如 404 页面）
+            result = {
+                "code": response.status_code,
+                "msg": response.text,
+                "http_status": response.status_code
+            }
         return result

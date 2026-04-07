@@ -40,17 +40,21 @@ class WikiAPI(BaseAPI):
 
     # ========== 空间成员 ==========
 
-    def delete_member(self, space_id: str, member_id: str, member_type: str = "userid") -> dict:
+    def delete_member(self, space_id: str, member_id: str, member_type: str = "openid", member_role: str = "reader") -> dict:
         """
         删除知识空间成员
 
         :param space_id: 知识空间 ID
         :param member_id: 成员 ID
         :param member_type: 成员类型（userid/openid/unionid）
+        :param member_role: 成员角色（reader/editor/admin）
         :return: API 响应
         """
         endpoint = f"/wiki/v2/spaces/{space_id}/members/{member_id}"
-        params = {"member_type": member_type}
+        params = {
+            "member_type": member_type,
+            "member_role": member_role
+        }
         return self.delete(endpoint, params=params)
 
     # ========== 空间设置 ==========

@@ -21,14 +21,14 @@ feishu-api-test/
 │   ├── base.py             # 基础请求封装
 │   ├── docs.py             # 文档 API
 │   ├── wiki.py             # 知识库 API
-│   └── department.py       # 部门 API
+│   └── user.py              # 用户 API
 ├── utils/                  # 工具模块
 │   └── token_manager.py    # Token 管理（获取、缓存、刷新）
 ├── tests/                  # 测试用例
 │   ├── conftest.py         # Pytest 配置和 fixtures
 │   ├── test_docs.py        # 文档接口测试
 │   ├── test_wiki.py        # 知识库接口测试
-│   └── test_department.py  # 部门接口测试
+│   └── test_user.py         # 用户接口测试
 ├── e2e/                    # Playwright E2E 测试（预留）
 ├── reports/                # 测试报告输出目录
 ├── requirements.txt        # 项目依赖
@@ -101,7 +101,7 @@ pytest tests/ --html=reports/report.html --self-contained-html
 |------|------|
 | 更新知识空间设置 | PUT |
 
-#### 3. 部门
+#### 3. 用户
 
 | 接口 | 方法 |
 |------|------|
