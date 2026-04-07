@@ -1,0 +1,11 @@
+# 飞书开放平台 API 测试配置
+
+# 应用凭证（请替换为你自己的 app_id 和 app_secret）
+APP_ID = "your_app_id"
+APP_SECRET = "your_app_secret"
+
+# API 基础地址
+BASE_URL = "https://open.feishu.cn/open-apis"
+
+# Token 缓存配置
+TOKEN_EXPIRE_BUFFER = 300  # token 过期前 5 分钟刷新
