@@ -11,12 +11,19 @@ from utils.token_manager import token_manager
 class BaseAPI:
     """API 请求基类"""
 
-    def __init__(self):
+    def __init__(self, user_token: str = None):
+        """
+        初始化 API 客户端
+        
+        :param user_token: user_access_token（可选），用于需要用户权限的接口
+        """
         self.base_url = BASE_URL
+        self.user_token = user_token
 
     def _get_headers(self) -> dict:
         """获取请求头，包含 token"""
-        token = token_manager.get_token()
+        # 优先使用 user_token，否则使用 tenant_access_token
+        token = self.user_token if self.user_token else token_manager.get_token()
         return {
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json"

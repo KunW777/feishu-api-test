@@ -12,21 +12,27 @@ class TestDocsAPI:
     @pytest.fixture(autouse=True)
     def setup(self):
         self.docs_api = DocsAPI()
+        self.document_id = None
 
     def test_get_token(self, api_token):
         """测试获取 token"""
         assert api_token is not None
         assert len(api_token) > 0
 
-    def test_create_doc(self):
+    def test_01_create_doc(self):
         """测试创建文档"""
-        result = self.docs_api.create_doc(title="测试文档")
-        # 验证 API 能连通（可能是成功或业务错误）
-        assert "code" in result
+        result = self.docs_api.create_doc(title="API测试文档")
+        assert result["code"] == 0
+        # 保存 document_id 供后续测试使用
+        self.__class__.document_id = result["data"]["document"]["document_id"]
+        print(f"\n创建文档成功，document_id: {self.__class__.document_id}")
 
-    def test_get_doc_info(self):
+    def test_02_get_doc_info(self):
         """测试获取文档基本信息"""
-        # document_id 需要至少27个字符
-        result = self.docs_api.get_doc_info(document_id="test_doc_id_12345678901234567890")
-        # 验证 API 能连通（文档不存在是正常的）
-        assert "code" in result
+        # 如果创建失败，跳过此测试
+        if not hasattr(self.__class__, 'document_id') or not self.__class__.document_id:
+            pytest.skip("没有有效的 document_id")
+        
+        result = self.docs_api.get_doc_info(document_id=self.__class__.document_id)
+        assert result["code"] == 0
+        print(f"\n获取文档信息成功: {result['data']['document']['title']}")
