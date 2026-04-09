@@ -14,6 +14,9 @@ env/
 # 测试报告
 reports/*.html
 
+# E2E 登录态（每个开发者自己跑 save_auth.py 生成）
+tests/e2e/auth_state.json
+
 # IDE
 .idea/
 .vscode/
