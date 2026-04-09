@@ -1,20 +1,13 @@
 """
-Pytest 配置文件
-定义全局 fixtures 和钩子
+API 测试层的 pytest 配置
+
+只放 API 测试专用的 fixture：tenant_access_token 获取、api_token / user_token。
+--user-token 命令行参数已上移到项目根 conftest.py（pytest_addoption 必须
+在 pytest 解析命令行前被加载，放在子目录 conftest 里会导致 argparse 识别不了）。
 """
 
 import pytest
 from utils.token_manager import token_manager
-
-
-def pytest_addoption(parser):
-    """添加命令行参数"""
-    parser.addoption(
-        "--user-token",
-        action="store",
-        default=None,
-        help="user_access_token，用于需要用户权限的接口测试"
-    )
 
 
 @pytest.fixture(scope="session", autouse=True)
