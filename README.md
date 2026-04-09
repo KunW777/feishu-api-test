@@ -99,27 +99,11 @@ feishu-api-test/
 ### 1. 克隆仓库
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/KunW777/feishu-api-test
 cd feishu-api-test
 ```
 
-### 2. 创建虚拟环境
-
-Windows PowerShell：
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-macOS / Linux：
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. 安装依赖
+### 2. 安装依赖
 
 ```bash
 pip install -r requirements.txt
@@ -168,7 +152,7 @@ TOKEN_EXPIRE_BUFFER = 300
 
 对应页面示例：
 
-![App ID 和 App Secret 获取位置](./Snipaste_2026-04-10_00-24-36.png)
+![App ID 和 App Secret 获取位置](docs/images/app-id-secret.png)
 
 注意：
 
@@ -198,7 +182,7 @@ pytest tests/api -v -s --html=reports/report.html --self-contained-html
 
 报告效果示例：
 
-![pytest-html 测试报告示例](./Snipaste_2026-04-10_00-25-15.png)
+![pytest-html 测试报告示例](docs/images/report-example.png)
 
 ## 第三步：获取 `user_access_token`
 
@@ -220,7 +204,7 @@ pytest tests/api -v -s --html=reports/report.html --self-contained-html
 
 操作位置示例：
 
-![user_access_token 获取位置](./Snipaste_2026-04-10_00-29-37.png)
+![user_access_token 获取位置](docs/images/user-access-token.png)
 
 这样可以获得两类 token：
 
@@ -329,3 +313,4 @@ pytest tests -v -s --user-token "你的 user_access_token" --html=reports/report
 | 创建知识空间 | `user_access_token` |
 | 更新知识空间设置 | 依赖已创建空间，当前测试流程中与上一步联动 |
 | 删除知识空间成员 | 依赖已创建空间，当前测试流程中与上一步联动 |
+
