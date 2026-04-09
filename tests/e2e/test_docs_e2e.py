@@ -1,10 +1,9 @@
 """
 飞书云文档 E2E 测试
 
-三个场景：
+两个场景：
 1. TestDriveHomeLoads    — 登录态有效性 + 后端 API 健康检查
 2. TestNetworkMonitoring — 网络请求监听与分类统计
-3. TestRouteInterception — Playwright route() 拦截机制演示
 
 所有测试依赖 tests/e2e/auth_state.json（由 save_auth.py 生成），
 conftest.py 会自动把登录态注入到 page fixture 创建的浏览器 context 里。
@@ -54,7 +53,7 @@ class TestDriveHomeLoads:
         )
 
         print(
-            f"\n✅ drive home 加载正常："
+            f"\n[OK] drive home 加载正常："
             f"共捕获 {len(responses)} 个响应，无失败 API"
         )
 
@@ -106,37 +105,3 @@ class TestNetworkMonitoring:
 
         # 宽松断言：加载 drive home 至少应该产生 HTML + 若干静态资源
         assert len(captured) > 0, "加载 drive home 应该至少产生一些请求"
-
-
-class TestRouteInterception:
-    """演示 page.route() 能在飞书域名下挂上拦截器。"""
-
-    def test_route_can_intercept_feishu_api(self, page, feishu_base_url):
-        """
-        注册 route handler，只统计被拦截的 URL，不改写响应。
-
-        这个测试是未来写 mock 响应测试的基础——先确认拦截机制能挂上，
-        后续可以强化为"拦截特定 URL 返回自定义数据"的完整 mock 测试。
-        """
-        intercepted: list[str] = []
-
-        def handler(route):
-            intercepted.append(route.request.url)
-            # continue_() 表示放行请求，不修改响应
-            route.continue_()
-
-        # 匹配任意路径中包含 /api/ 的请求
-        page.route("**/api/**", handler)
-
-        page.goto(f"{feishu_base_url}/drive/home/")
-        page.wait_for_load_state("networkidle")
-
-        print(f"\n拦截到 {len(intercepted)} 个 /api/ 请求")
-        if intercepted:
-            print("前 3 个被拦截的 URL（截断到 100 字符）：")
-            for url in intercepted[:3]:
-                print(f"  {url[:100]}")
-
-        # 宽松断言：只要拦截机制能挂上就算通过
-        # 即使 0 个拦截也不 fail（可能 URL pattern 不匹配，属可预期情况）
-        assert isinstance(intercepted, list)

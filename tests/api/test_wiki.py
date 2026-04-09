@@ -42,7 +42,7 @@ class TestWikiAPIWithUserToken:
             name="API测试知识空间",
             description="用于API测试的知识空间"
         )
-        assert result["code"] == 0
+        assert result["code"] == 0, f"create_space 失败: {result}"
         self.__class__.space_id = result["data"]["space"]["space_id"]
         print(f"\n创建知识空间成功，space_id: {self.__class__.space_id}")
 
@@ -50,19 +50,19 @@ class TestWikiAPIWithUserToken:
         """测试更新知识空间设置"""
         if not hasattr(self.__class__, 'space_id') or not self.__class__.space_id:
             pytest.skip("创建知识空间失败，跳过此测试")
-        
+
         result = self.wiki_api.update_space_settings(
             space_id=self.__class__.space_id,
             visible_type="public"
         )
-        assert result["code"] == 0
+        assert result["code"] == 0, f"update_space_settings 失败: {result}"
         print(f"\n更新知识空间设置成功")
 
     def test_03_delete_member(self):
         """测试删除知识空间成员"""
         if not hasattr(self.__class__, 'space_id') or not self.__class__.space_id:
             pytest.skip("创建知识空间失败，跳过此测试")
-        
+
         # 使用不存在的成员ID测试，验证API连通性
         result = self.wiki_api.delete_member(
             space_id=self.__class__.space_id,
@@ -71,5 +71,5 @@ class TestWikiAPIWithUserToken:
             member_role="reader"
         )
         # 成员不存在是正常的，验证API能连通即可
-        assert "code" in result
+        assert "code" in result, f"delete_member 响应异常: {result}"
         print(f"\n删除成员接口调用成功")
